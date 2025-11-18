@@ -98,14 +98,18 @@ def run_pca_experiment(X, y):
 def plot_results(k_values, accuracies):
     """Creates a plot of k (dimensionality) vs. Accuracy."""
     plt.figure(figsize=(12, 7))
-    plt.plot(k_values, accuracies, marker='o', linestyle='-', color='#007ACC', linewidth=2)
+    plt.plot(k_values, accuracies, marker='o', linestyle='-', color='#007ACC', linewidth=2, label='Average Recognition Accuracy')
     
     max_acc = max(accuracies)
-    max_k = k_values[np.argmax(accuracies)]
+    try:
+        max_k_index = accuracies.index(max_acc) 
+        optimal_k = k_values[max_k_index]
+    except ValueError:
+        optimal_k = k_values[np.argmax(accuracies)]
     
     # Highlight the peak
-    plt.scatter(max_k, max_acc, color='red', s=150, zorder=5, label=f'Optimal k: {max_k} (Acc: {max_acc:.4f})')
-    plt.axvline(x=max_k, color='red', linestyle='--', alpha=0.5)
+    plt.axvline(x=optimal_k, color='red', linestyle='--', alpha=0.5)
+    plt.axhline(y=max_acc, color='red', linestyle=':', alpha=0.3)
 
     plt.title('Relationship between Dimensionality (k) and Face Recognition Accuracy (Eigenfaces)', fontsize=16)
     plt.xlabel('Number of Principal Components (k)', fontsize=14)
